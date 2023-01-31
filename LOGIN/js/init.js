@@ -3,7 +3,7 @@
 $(document).ready(function() {
 						   
 	$(".countdown").countdown({
-				date: "21 August 2022 10:30:00",
+				date: "21 Decemeber 2022 10:30:00",
 				format: "on"
 			},
 			
@@ -11,3 +11,5 @@ $(document).ready(function() {
 				// callback function
 			});
 });	
+
+
