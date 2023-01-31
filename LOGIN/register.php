@@ -1,6 +1,8 @@
 <?php
     @include 'database/db.php';
 
+
+
     if (isset($_POST['submit'])) {
         $name = mysqli_real_escape_string($db, $_POST['name']);
         $email = mysqli_real_escape_string($db, $_POST['email']);
@@ -34,39 +36,25 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register Form</title>
+    <link href="images/CAS Logo Main_PNG.png" rel="icon">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="login-page">
         <div class="display">
         <div class="home-info">
-                              <h1 style="color: #fff">CAS VOTE COUNTDOWN</h1>
-                              <!-- You can change the date time in init.js file -->
-                              <ul class="countdown">
-                                   <li>
-                                        <span class="days">14</span>
-                                        <h3>Days</h3>
-                                   </li>
-                                   <li>
-                                        <span class="hours">10</span>
-                                        <h3>hours</h3>
-                                   </li>
-                                   <li>
-                                        <span class="minutes">15</span>
-                                        <h3>minutes</h3>
-                                   </li>
-                                   <li>
-                                        <span class="seconds">34</span>
-                                        <h3>seconds</h3>
-                                   </li>     
-                              </ul>
-                         </div>
+        
+        </div>
         </div>
 
         <div class="login-spot">
             <div class="form-container">
                 <form action="" method="post">
+                    <img src="images/CAS Logo Main_PNG.png" width="150px" alt="">
+                    <br>
+                    <br>
                     <h3>Registration Page</h3>
+
                     <?php
                         if (isset($error)) {
                             foreach ($error as $error) {
@@ -75,10 +63,11 @@
                         };
                     ?>
                     <input type="text" name="name" required placeholder="Enter your name">
-                    <input type="email" name="email" required placeholder="Enter your email">
+                    <input type="email" name="email" required placeholder="Enter your valid email" >
                     <input type="password" name="password" required placeholder="Enter your password">
                     <input type="password" name="cpassword" required placeholder="Confirm your Password">
                     <input type="submit" name="submit" value="Register now" class="form-btn">
+                    <p>Need a strong password? <a href="generate.html">Generate Now</a></p>
                     <p>Already have an account? <a href="login.php">Login Now</a></p>
                 </form>
             </div>
