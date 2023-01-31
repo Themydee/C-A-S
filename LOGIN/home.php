@@ -1,5 +1,15 @@
 <?php
-    @include 'database/db.php';
+  @include "database/db.php";
+  session_start();
+
+  if(!isset($_SESSION['user_name'])){
+    header('location:login.php');
+}
+
+  // $category = $_GET['category'];
+  // $sql = "SELECT * FROM categories WHERE category = '$category'";
+  // $result = mysqli_query($db, $sql);
+
 ?>
 
 <!DOCTYPE html>
@@ -9,6 +19,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="images/CAS Logo Main_PNG.png" rel="icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <title>CAS VOTING SITE</title>
 </head>
@@ -18,12 +29,11 @@
   class="d-flex py-4 bg-white shadow text-right text-dark px-2 px-md-3 px-lg-5"
 >
 <a class="mr-auto" href="#">CAS Vote</a>
-  
-<a style="text-align: right;"href="logout.php">Logout</a>
 
 
+<a class="top-name"style="text-align: right;" id="dropdownMenuLink" href="logout.php"><?= $_SESSION['user_name'] ?></a>
 
-<!-- <?= $_SESSION['user_name'] ?> -->
+
 </nav>
 
 
@@ -87,6 +97,15 @@
     </div>
     
     <style>
+      .top-name{
+
+        color: #1ab922;
+      }
+
+      .top-name:hover{
+        color: rgb(12, 95, 70);
+        text-decoration: none;
+      }
       .display-5 {
         font-size: 3rem;
       }
