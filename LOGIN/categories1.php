@@ -74,11 +74,11 @@
                   <?php
                     $c_name = $row['name'];
                     $c_cat = $row['category'];
-                    $user_id = $_SESSION['user_id'];
+                    $user_id = $row['id'];
                   ?>
                   <!-- <input type="text" value="<?=$row['name']?>" style="border: 2px solid red" id='name'>
                   <input type="text" value="<?=$row['category']?>" style="border: 2px solid red" id='category'> -->
-                  <!-- <input type="text" value="<?=$_SESSION['user_id']?>" style="border: 2px solid red" id='vote_id'> -->
+                  <!-- <input type="text" value="<?=$row['user_id']?>" style="border: 2px solid red" id='vote_id'> -->
                   <button class="vote-btn" style="width: 200px; margin-bottom: 1rem" name="vote-btn" onclick="castVote('<?=$c_name?>', '<?=$c_cat?>', '<?=$user_id?>')">Vote</button>
                 </div>
               </div>
