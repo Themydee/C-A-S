@@ -36,19 +36,27 @@
             $mail->SMTPAuth = true;
 
             //SMTP username
-            $mail->Username = 'nifetemiboy@gmail.com';
+            $mail->Username = 'akanbi-bello.temidayo@lmu.edu.ng';
 
             //SMTP password
-            $mail->Password = 'Themydee2018';
+            $mail->Password = 'leavemealone21';
 
             //Enable TLS encryption;
-            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->SMTPSecure = 'tls';// Enable TLS encryption, `ssl` also accepted
 
             //TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
-            $mail->Port = 587;
+            $mail->Port = 465;
+
+            $mail->SMTPOptions = array(
+                'ssl' => array(
+                    'verify_peer' => false,
+                    'verify_peer_name' => false,
+                    'allow_self_signed' => true
+                )
+            );
 
             //Recipients
-            $mail->setFrom('nifetemboy@gmail.com', 'CAS_VOTE');
+            $mail->setFrom('akanbi-bello.temidayo@lmu.edu.ng', 'CAS_VOTE');
 
             //Add a recipient
             $mail->addAddress($email, $name);
