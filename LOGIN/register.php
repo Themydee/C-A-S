@@ -1,6 +1,10 @@
 <?php
     @include 'database/db.php';
 
+    require 'vendor/phpmailer/phpmailer/src/PHPMailer.php';
+    require 'vendor/phpmailer/phpmailer/src/SMTP.php';
+    require 'vendor/phpmailer/phpmailer/src/Exception.php';
+
     use PHPMailer\PHPMailer\PHPMailer;
     use PHPMailer\PHPMailer\SMTP;
     use PHPMailer\PHPMailer\Exception;
@@ -20,7 +24,7 @@
 
         $result = mysqli_query($db, $select);
 
-        $mail = new PHPMailer(true);
+        $mail = new PHPMailer();
 
         try {
            
@@ -33,30 +37,23 @@
             $mail->Host = 'smtp.gmail.com';
 
             //Enable SMTP authentication
-            $mail->SMTPAuth = true;
+            $mail->SMTPAuth = 'true';
 
             //SMTP username
-            $mail->Username = 'akanbi-bello.temidayo@lmu.edu.ng';
+            $mail->Username = 'nifetemiboy@gmail.com';
 
             //SMTP password
-            $mail->Password = 'leavemealone21';
+            $mail->Password = 'cxfnrvaazejfbwco';
 
             //Enable TLS encryption;
             $mail->SMTPSecure = 'tls';// Enable TLS encryption, `ssl` also accepted
 
             //TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
-            $mail->Port = 465;
+            $mail->Port = '587';
 
-            $mail->SMTPOptions = array(
-                'ssl' => array(
-                    'verify_peer' => false,
-                    'verify_peer_name' => false,
-                    'allow_self_signed' => true
-                )
-            );
 
             //Recipients
-            $mail->setFrom('akanbi-bello.temidayo@lmu.edu.ng', 'CAS_VOTE');
+            $mail->setFrom('nifetemiboy@gmail.com', 'CAS_VOTE');
 
             //Add a recipient
             $mail->addAddress($email, $name);
@@ -103,7 +100,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register Form</title>
-    <link href="images/CAS Logo Main_PNG.png" rel="icon">
+    <link href="images/CAS Logo Main_PNG.png" rel="icon" >
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -117,7 +114,7 @@
         <div class="login-spot">
             <div class="form-container">
                 <form action="" method="post">
-                    <img src="images/CAS Logo Main_PNG.png" width="150px" alt="">
+                    <img src="images/CAS Logo Main_PNG.png" width="100px" alt="">
                     <br>
                     <br>
                     <h3>Registration Page</h3>
@@ -134,7 +131,6 @@
                     <input type="password" name="password" required placeholder="Enter your password">
                     <input type="password" name="cpassword" required placeholder="Confirm your Password">
                     <input type="submit" name="submit" value="Register now" class="form-btn">
-                    <p>Need a strong password? <a href="generate.html">Generate Now</a></p>
                     <p>Already have an account? <a href="login.php">Login Now</a></p>
                 </form>
             </div>
