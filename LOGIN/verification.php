@@ -6,22 +6,54 @@
 
     if (isset($_POST["verify_email"]))
     {
-        $email = $_POST["email"];
-        $verification_code = $_POST["verification_code"];
+        $email = mysqli_real_escape_string($db, $_POST['email']);
+        $verification_code = mysqli_real_escape_string($db, $_POST['verification_code']);
 
 
         // mark email as verified
-        $sql = "UPDATE users SET email_verified_at = NOW() WHERE email = '" . $email . "' AND verification_code = '" . $verification_code . "'";
+        $sql = "UPDATE user_form SET email_verified_at = NOW() WHERE  email = '$email' AND verification_code = '$verification_code'";
         $result  = mysqli_query($db, $sql);
 
-        if (mysqli_affected_rows($db) == 0)
-        {
-            die("Verification code failed.");
-        }
+        // if (mysqli_affected_rows($db) == 0)
+        // {
+        //     die("Verification code failed.");
+        // }
+
 
         echo "<p>You can login now.</p>";
         exit();
     }
+    
+    if (isset($_POST['submit'])) {
+
+        $email = mysqli_real_escape_string($db, $_POST['email']);
+        $verification_code = mysqli_real_escape_string($db, $_POST['verification_code']);
+        $select = " SELECT * FROM user_form WHERE email = '$email' && verification_code = '$verification_code' ";
+
+        $result = mysqli_query($db, $select);
+
+        if (mysqli_num_rows($result) > 0) {
+            $row = mysqli_fetch_array($result);
+
+            if ($row['user_type'] == 'admin') {
+
+                $_SESSION['admin_name'] = $row['name'];
+                header('location: admin.php');
+
+            }elseif ($row['user_type'] == 0) {
+
+                $_SESSION['user_name'] = $row['name'];
+                header('location: home.php');
+                
+            }elseif ($row['user_type'] == 1) {
+
+                $_SESSION['user_name'] = $row['name'];
+                header('location: admin.php');
+            }
+        }else{
+            $error[] = 'Incorrect Verification code';
+        }
+    };
 
 ?>
 
@@ -62,11 +94,11 @@
                             };                
                         };
                     ?>
-                    <input type="email" name="email" required placeholder="Enter your email" value="<?php echo $_GET['email']; ?>">
+                    <input type="email" name="email" required placeholder="Enter your email">
                     <input type="text" name="verification_code" placeholder="Enter verification code" required />
 
 
-                    <input type="submit" name="verify_email" value="Verify Email">
+                    <input type="submit" name="submit" value="Verify Email" class="form-btn">
                 
                 </form>
             </div>
