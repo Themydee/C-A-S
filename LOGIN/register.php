@@ -16,6 +16,7 @@
     if (isset($_POST['submit'])) {
         $name = mysqli_real_escape_string($db, $_POST['name']);
         $email = mysqli_real_escape_string($db, $_POST['email']);
+        $college = ( $_POST['college']);
         $pass = md5($_POST['password']);
         $cpass = md5($_POST['cpassword']);
      
@@ -28,7 +29,7 @@
 
         try {
            
-            $mail->SMTPDebug = 2;
+            $mail->SMTPDebug = 0;
 
             //Send using SMTP
             $mail->isSMTP();
@@ -40,10 +41,10 @@
             $mail->SMTPAuth = 'true';
 
             //SMTP username
-            $mail->Username = 'nifetemiboy@gmail.com';
+            $mail->Username = 'caaasvote@gmail.com';
 
             //SMTP password
-            $mail->Password = 'cxfnrvaazejfbwco';
+            $mail->Password = 'zjobpyfziotliera';
 
             //Enable TLS encryption;
             $mail->SMTPSecure = 'tls';// Enable TLS encryption, `ssl` also accepted
@@ -53,7 +54,7 @@
 
 
             //Recipients
-            $mail->setFrom('nifetemiboy@gmail.com', 'CAS_VOTE');
+            $mail->setFrom('caaasvote@gmail.com ', 'CAS_VOTE');
 
             //Add a recipient
             $mail->addAddress($email, $name);
@@ -79,7 +80,7 @@
                 if ($pass != $cpass) {
                     $error[] = 'Passwords do not match'; 
                 }else {
-                    $insert = "INSERT INTO user_form(name, email, password, verification_code, email_verified_at, user_type) values('$name', '$email', '$pass', '$verification_code', '', '0')";
+                    $insert = "INSERT INTO user_form(name, email, college, password, verification_code, email_verified_at, user_type) values('$name', '$email', '$college', '$pass', '$verification_code', '', '0')";
                     mysqli_query($db, $insert);
                 }
             }   
@@ -127,7 +128,14 @@
                         };
                     ?>
                     <input type="text" name="name" required placeholder="Enter your name">
-                    <input type="email" name="email" required placeholder="Enter your valid email" >
+                    <input type="email" name="email" required placeholder="Enter your Lmu mail" >
+                    <select type="college" name="college" required placeholder="Enter your Lmu mail" >
+                        <option value="SELECT">Select College</option>
+                        <option value="CAS"> CAS </option>
+                        <option value="CBS"> CBS </option>
+                        <option value="CPAS"> COE </option>
+                        <option value="CPAS"> CPAS </option>
+                    </select>
                     <input type="password" name="password" required placeholder="Enter your password">
                     <input type="password" name="cpassword" required placeholder="Confirm your Password">
                     <input type="submit" name="submit" value="Register now" class="form-btn">
