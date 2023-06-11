@@ -4,11 +4,13 @@
 
   if(!isset($_SESSION['user_name'])){
     header('location:login.php');
-}
+  }
 
-  $category = $_GET['category'];
-  $sql = "SELECT * FROM categories WHERE category = '$category'";
-  $result = mysqli_query($db, $sql);
+  if (isset($_GET['category'])) {
+    $category = $_GET['category'];
+    $sql = "SELECT * FROM categories WHERE category = '$category'";
+    $result = mysqli_query($db, $sql);
+  }
 
 ?>
 <html lang="en">
@@ -37,7 +39,7 @@
 <nav
   class="d-flex py-4 bg-white shadow text-right text-dark px-2 px-md-3 px-lg-5"
 >
-  <a class="mr-auto" href="" ><img src="images/CAS Logo Main_PNG.png" width="70px"></a>
+  <a class="mr-auto" href="home.php" ><img src="images/CAS Logo Main_PNG.png" width="70px"></a>
   
 
 </nav>
@@ -78,8 +80,10 @@
                   ?>
                   <!-- <input type="text" value="<?=$row['name']?>" style="border: 2px solid red" id='name'>
                   <input type="text" value="<?=$row['category']?>" style="border: 2px solid red" id='category'> -->
-                  <!-- <input type="text" value="<?=$row['user_id']?>" style="border: 2px solid red" id='vote_id'> -->
-                  <button class="vote-btn" style="width: 200px; margin-bottom: 1rem" name="vote-btn" onclick="castVote('<?=$c_name?>', '<?=$c_cat?>', '<?=$user_id?>')">Vote</button>
+                  <!-- <input type="text" value="<?=$row['id']?>" style="border: 2px solid red" id='user_id'> -->
+                  <button class="vote-btn" name="vote-btn" onclick="castVote('<?=$c_name?>','<?=$c_cat?>','<?=$user_id?>')">
+                    Vote
+                  </button>
                 </div>
               </div>
 
@@ -89,22 +93,27 @@
         ?>
     </div>
 
-   <div class="cat-nav" style="text-align: center">
-            <button class="vote-btn" style="width: 200px; margin-bottom: 1rem;"><a href="home.php" style="color: black; text-decoration: none; text-underline: none;">&lt;&lt; Home</a></button>
-            <button class="vote-btn" style="width: 200px;"><a href="<?= $category?>" style="color: black; text-decoration: none; text-underline: none;">Next Category &gt;&gt;</a></button>
-        </div>
+    <div class="cat-nav" style="text-align: center">
+      <?php
+       $nextCategory = mysqli_fetch_assoc(mysqli_query($db, "SELECT MIN(category) AS next_category FROM categories WHERE category > '$category'"))['next_category'];
+
+      ?>
+      <button><a href="<?= 'categories1.php?category=' . $nextCategory ?>" style="color: black; text-decoration: none; text-underline: none; text-align: center;">Next Category >></a></button>
+      </div>
       
   </section>
 
   
     
  
-</div>`
+</div>
 
 <?php
-  if(isset($_POST['vote-btn'])) {
-    echo "hello world";
-  }
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['vote-btn'])) {
+  // Process the vote
+  echo "hello world";
+}
+
 ?>
 
 
@@ -149,45 +158,47 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/8.11.8/sweetalert2.all.js"></script>
           <!------Vote Count function-------->
     <script>
-      function castVote(name, category, id){
+      function castVote(name, category, id, user_id) {
         $.ajax({
-    					url: 'vote.php',
-    					method: 'POST',
-    					data: {
-                name,
-                category,
-                vote_id: id
-              },		
-              success: (response) => {
-                if(response == 2) {
-                  Swal.fire(
-                  'Good job!',
-                  `Vote successful`,
-                  'success'
-                )
-                } else if(response == 3) {
-                  Swal.fire(
-                  'Not successful!',
-                  `You cannot vote for again`,
-                  'error'
-                ) 
-                } else {
-                  Swal.fire(
-                  'Not successful!',
-                  `Something went wrong`,
-                  'error'
-                )
-                }
-              },
-              error: (e) => {
-                Swal.fire(
-                  'Not successful!',
-                  `${e}`,
-                  'error'
-                )
-              }
-            })
-        } 
+        url: 'vote.php',
+        method: 'POST',
+        data: {
+          name,
+          category,
+          vote_id: id,
+          user_id: user_id
+        },
+        success: (response) => {
+          if (response == 2) {
+            Swal.fire(
+              'Good job!',
+              'Vote successful',
+              'success'
+            )
+          } else if (response == 3) {
+            Swal.fire(
+              'Not successful!',
+              'You cannot vote again',
+              'error'
+            );
+          } else {
+        Swal.fire(
+          'Not successful!',
+          'Something went wrong',
+          'error'
+        );
+      }
+    },
+    error: (e) => {
+      Swal.fire(
+        'Not successful!',
+        `${e}`,
+        'error'
+      );
+    }
+  });
+}
+
     </script>
   </body>
 </html>
