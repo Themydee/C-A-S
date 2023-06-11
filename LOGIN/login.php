@@ -16,46 +16,46 @@
 
         $result = mysqli_query($db, $select);
 
-        // if (mysqli_num_rows($result) > 0) {
-        //     $row = mysqli_fetch_array($result);
-
-        //     if ($row['user_type'] == 'admin') {
-
-        //         $_SESSION['admin_name'] = $row['name'];
-        //         header('location: admin.php');
-
-        //     }elseif ($row['user_type'] == 0) {
-
-        //         $_SESSION['user_name'] = $row['name'];
-        //         $_SESSION['user_id'] = $row['id'];
-        //         header('location: home.php');
-                
-        //     }elseif ($row['user_type'] == 1) {
-
-        //         $_SESSION['user_name'] = $row['name'];
-        //         header('location: admin.php');
-        //     }
-        // }else{
-        //     $error[] = 'Incorrect Email or Password';
-        // }
-
-        //when CAS ASSOCIATION VOTING HAPPENS
         if (mysqli_num_rows($result) > 0) {
             $row = mysqli_fetch_array($result);
 
-            if ($row['user_college'] == 'CAS')  {
+            if ($row['user_type'] == 'admin') {
+
+                $_SESSION['admin_name'] = $row['name'];
+                header('location: admin.php');
+
+            }elseif ($row['user_type'] == 0) {
+
                 $_SESSION['user_name'] = $row['name'];
                 $_SESSION['user_id'] = $row['id'];
                 header('location: home.php');
+                
+            }elseif ($row['user_type'] == 1) {
 
-            }elseif ($row['user_college'] !== 'CAS' ) {
                 $_SESSION['user_name'] = $row['name'];
-                $_SESSION['user_id'] = $row['id'];
-                header('location: login.php');
+                header('location: admin.php');
             }
         }else{
             $error[] = 'Incorrect Email or Password';
         }
+
+        //when CAS ASSOCIATION VOTING HAPPENS
+        // if (mysqli_num_rows($result) > 0) {
+        //     $row = mysqli_fetch_array($result);
+
+        //     if ($row['user_college'] == 'CAS')  {
+        //         $_SESSION['user_name'] = $row['name'];
+        //         $_SESSION['user_id'] = $row['id'];
+        //         header('location: home.php');
+
+        //     }elseif ($row['user_college'] !== 'CAS' ) {
+        //         $_SESSION['user_name'] = $row['name'];
+        //         $_SESSION['user_id'] = $row['id'];
+        //         header('location: login.php');
+        //     }
+        // }else{
+        //     $error[] = 'Incorrect Email or Password';
+        // }
     };
 
 ?>  
