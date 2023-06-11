@@ -1,95 +1,41 @@
 <?php
     @include 'database/db.php';
-
-    require 'vendor/phpmailer/phpmailer/src/PHPMailer.php';
-    require 'vendor/phpmailer/phpmailer/src/SMTP.php';
-    require 'vendor/phpmailer/phpmailer/src/Exception.php';
-
-    use PHPMailer\PHPMailer\PHPMailer;
-    use PHPMailer\PHPMailer\SMTP;
-    use PHPMailer\PHPMailer\Exception;
-
-    require 'vendor/autoload.php';
-
-
-
+    
     if (isset($_POST['submit'])) {
         $name = mysqli_real_escape_string($db, $_POST['name']);
         $email = mysqli_real_escape_string($db, $_POST['email']);
         $college = ( $_POST['college']);
         $pass = md5($_POST['password']);
         $cpass = md5($_POST['cpassword']);
-     
-
-        $select = " SELECT * FROM user_form WHERE email = '$email' && password = '$pass' ";
-
-        $result = mysqli_query($db, $select);
-
-        $mail = new PHPMailer();
-
-        try {
-           
-            $mail->SMTPDebug = 0;
-
-            //Send using SMTP
-            $mail->isSMTP();
-
-            //Set the SMTP server to send through
-            $mail->Host = 'smtp.gmail.com';
-
-            //Enable SMTP authentication
-            $mail->SMTPAuth = 'true';
-
-            //SMTP username
-            $mail->Username = 'caaasvote@gmail.com';
-
-            //SMTP password
-            $mail->Password = 'zjobpyfziotliera';
-
-            //Enable TLS encryption;
-            $mail->SMTPSecure = 'tls';// Enable TLS encryption, `ssl` also accepted
-
-            //TCP port to connect to, use 465 for `PHPMailer::ENCRYPTION_SMTPS` above
-            $mail->Port = '587';
-
-
-            //Recipients
-            $mail->setFrom('caaasvote@gmail.com ', 'CAS_VOTE');
-
-            //Add a recipient
-            $mail->addAddress($email, $name);
-
-            //Set email format to HTML
-            $mail->isHTML(true);
-
-            $verification_code = substr(number_format(time() * rand(), 0, '', ''), 0, 6);
-
-            $mail->Subject = 'Verify Your Account';
-            $mail->Body    = '<p>Your verification code is: <b style="font-size: 30px;">' . $verification_code . '</b></p>
-            <br><br>
-                    <p>With regrads,</p>
-                    <b>Coded Farmer</b>
-                    https://themydeecodes.000webhostapp.com';
-
-            $mail->send();
-            // echo 'Message has been sent';
-
-            if (mysqli_num_rows($result) > 0) {
-                $error = 'user already exists';
-            }else{
-                if ($pass != $cpass) {
-                    $error[] = 'Passwords do not match'; 
-                }else {
-                    $insert = "INSERT INTO user_form(name, email, college, password, verification_code, email_verified_at, user_type) values('$name', '$email', '$college', '$pass', '$verification_code', '', '0')";
-                    mysqli_query($db, $insert);
-                }
-            }   
-
-            header("Location: verification.php?email=" . $email);
-            exit();
-        } catch (Exception $e) {
-            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        
+        $query = mysqli_query($db, " SELECT * FROM user_form WHERE email = '$email' && name = '$name' ");
+    
+        // Validate email format
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+            $error[] = 'Invalid email format';
         }
+
+        // Check if the email ends with @lmu.edu.ng
+        $pattern = '/@lmu\.edu\.ng$/';
+        if (!preg_match( $pattern, $email)) {
+           echo 'Only @lmu.edu.ng email addresses are allowed';
+            exit;
+        }
+
+
+        if (mysqli_num_rows($query) > 0) {
+            $error[] = 'user already exists';
+        }else{
+            if ($pass != $cpass) {
+                $error[] = 'Passwords do not match'; 
+            }else {
+                $insert = "INSERT INTO user_form(name, email, college, password, user_type) values('$name', '$email', '$college', '$pass', '0')";
+                header('location: login.php');
+                mysqli_query($db, $insert);
+            }
+        }
+
+
     };
 
 ?>
