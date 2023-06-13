@@ -82,7 +82,7 @@
     >
       <hr class="d-inline-block w-50 mr-2" style="vertical-align: middle" />
       Developed by
-      <a target="_blank" href="#" class="my-name"
+      <a target="_blank" href="https://themydee.brimble.app/" class="my-name"
         >Coded Farmer</a
       >
     </div>
