@@ -136,7 +136,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['vote-btn'])) {
     >
       <hr class="d-inline-block w-50 mr-2" style="vertical-align: middle" />
       Developed by
-      <a target="_blank" href="http://themydeecodes.000webhostapp.com" class="my-name"
+      <a target="_blank" href="https://themydee.brimble.app/" class="my-name"
         >Coded Farmer</a
       >
     </div>
